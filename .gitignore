@@ -12,3 +12,7 @@ backups/
 # OS
 .DS_Store
 Thumbs.db
+
+# Code Server
+code-server/data/
+code-server/.ssh/

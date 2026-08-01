@@ -1,0 +1,44 @@
+services:
+
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - ./homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+
+  node-red:
+    container_name: node-red
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./node-red:/data
+
+
+  code-server:
+    container_name: code-server
+    image: lscr.io/linuxserver/code-server:latest
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./code-server:/config
+      - ./projects:/workspace

@@ -1,0 +1,23 @@
+[2026-08-01T15:42:32.443Z] info  code-server 4.131.0 a3fc2899bd0fcd388253c0e79ce33b8acd48c688
+[2026-08-01T15:42:32.450Z] info  Using user-data-dir /config/data
+[2026-08-01T15:42:32.549Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-08-01T15:42:32.553Z] info  HTTP server listening on http://[::]:8443/
+[2026-08-01T15:42:32.554Z] info    - Authentication is disabled
+[2026-08-01T15:42:32.554Z] info    - Not serving HTTPS
+[2026-08-01T15:42:32.554Z] info  Session server listening on /config/data/code-server-ipc.sock
+[15:48:25] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[15:48:26] [AgentHostChannel] Registered unavailable IPC channel 'agentHostProxy': no --agent-host-bridge-port / --agent-host-bridge-path set.
+[15:48:26] Extension host agent started.
+[15:48:26] Started initializing default profile extensions in extensions installation folder. file:///config/extensions
+[15:48:26] Completed initializing default profile extensions in extensions installation folder. file:///config/extensions
+[15:48:31] [::ffff:192.168.1.186][816f6f56][ManagementConnection] New connection established.
+[15:48:32] [::ffff:192.168.1.186][8ce24479][ExtensionHostConnection] New connection established.
+[15:48:32] [::ffff:192.168.1.186][8ce24479][ExtensionHostConnection] Starting extension host process...
+[15:48:33] [::ffff:192.168.1.186][8ce24479][ExtensionHostConnection] <267> Launched Extension Host Process.
+[15:48:34] [::ffff:192.168.1.186][8ce24479][ExtensionHostConnection] <267> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
