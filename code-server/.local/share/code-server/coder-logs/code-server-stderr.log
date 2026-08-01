@@ -1,5 +1,0 @@
-(node:210) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda_bg.wasm
-File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda.js
-[15:51:47] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
