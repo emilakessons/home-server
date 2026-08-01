@@ -5,10 +5,16 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     network_mode: host
     privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/serial0:/dev/serial0
     restart: unless-stopped
     volumes:
       - ./homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
 
 
   mosquitto:

@@ -2,6 +2,10 @@
 homeassistant/.storage/
 homeassistant/home-assistant.log*
 homeassistant/database*
+homeassistant/*.log*
+homeassistant/*.db
+homeassistant/*.db-*
+homeassistant/.ha_run.lock
 
 # Secrets
 secrets.yaml
