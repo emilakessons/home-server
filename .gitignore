@@ -1,0 +1,14 @@
+# Home Assistant
+homeassistant/.storage/
+homeassistant/home-assistant.log*
+homeassistant/database*
+
+# Secrets
+secrets.yaml
+
+# Backups
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
