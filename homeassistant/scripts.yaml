@@ -1,0 +1,409 @@
+# Genererade Google-kommandon: ett script per motiv
+# Säg t.ex. "Hey Google, aktivera skriv ut en bild på Bamse"
+
+print_coloring_page:
+  alias: Skriv ut målarbild
+  description: Intern helper – skriv ut på valfritt motiv
+  mode: queued
+  fields:
+    subject:
+      name: Motiv
+      required: true
+      selector:
+        text:
+  sequence:
+    - action: tts.speak
+      target:
+        entity_id: tts.google_translate_sv_se
+      data:
+        media_player_entity_id: media_player.vardagsrum_vardagsrum
+        message: "Jag skriver ut en bild på {{ subject }}"
+    - action: rest_command.print_coloring_page
+      data:
+        subject: "{{ subject }}"
+    - action: notify.persistent_notification
+      data:
+        title: "Målarbild"
+        message: "Skriver ut: {{ subject }}"
+
+print_random_coloring_page:
+  alias: Skriv ut slumpad målarbild
+  mode: single
+  sequence:
+    - variables:
+        subjects:
+          - dinosaurie
+          - katt
+          - hund
+          - traktor
+          - prinsessa
+          - enhörning
+          - brandbil
+          - rymdraket
+          - paw patrol
+          - Bamse
+          - batman
+        subject: "{{ subjects | random }}"
+    - action: script.print_coloring_page
+      data:
+        subject: "{{ subject }}"
+
+print_bild_paw_patrol:
+  alias: Skriv ut en bild på paw patrol
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol"
+
+print_bild_paw_patrol_chase:
+  alias: Skriv ut en bild på paw patrol chase
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol chase"
+
+print_bild_paw_patrol_marshall:
+  alias: Skriv ut en bild på paw patrol marshall
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol marshall"
+
+print_bild_paw_patrol_skye:
+  alias: Skriv ut en bild på paw patrol skye
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol skye"
+
+print_bild_paw_patrol_rubble:
+  alias: Skriv ut en bild på paw patrol rubble
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol rubble"
+
+print_bild_paw_patrol_rocky:
+  alias: Skriv ut en bild på paw patrol rocky
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol rocky"
+
+print_bild_paw_patrol_zuma:
+  alias: Skriv ut en bild på paw patrol zuma
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol zuma"
+
+print_bild_paw_patrol_everest:
+  alias: Skriv ut en bild på paw patrol everest
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "paw patrol everest"
+
+print_bild_bamse:
+  alias: Skriv ut en bild på Bamse
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Bamse"
+
+print_bild_skalman:
+  alias: Skriv ut en bild på Skalman
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Skalman"
+
+print_bild_lilla_skutt:
+  alias: Skriv ut en bild på Lilla Skutt
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Lilla Skutt"
+
+print_bild_pippi_langstrump:
+  alias: Skriv ut en bild på Pippi Långstrump
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Pippi Långstrump"
+
+print_bild_emil_i_lonneberga:
+  alias: Skriv ut en bild på Emil i Lönneberga
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Emil i Lönneberga"
+
+print_bild_alfons_aberg:
+  alias: Skriv ut en bild på Alfons Åberg
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Alfons Åberg"
+
+print_bild_bolibompa:
+  alias: Skriv ut en bild på Bolibompa
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Bolibompa"
+
+print_bild_draken_boll:
+  alias: Skriv ut en bild på Draken Boll
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "Draken Boll"
+
+print_bild_dinosaurie:
+  alias: Skriv ut en bild på en dinosaurie
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "dinosaurie"
+
+print_bild_katt:
+  alias: Skriv ut en bild på en katt
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "katt"
+
+print_bild_hund:
+  alias: Skriv ut en bild på en hund
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "hund"
+
+print_bild_hast:
+  alias: Skriv ut en bild på en häst
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "häst"
+
+print_bild_kanin:
+  alias: Skriv ut en bild på en kanin
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "kanin"
+
+print_bild_enhorning:
+  alias: Skriv ut en bild på en enhörning
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "enhörning"
+
+print_bild_drake:
+  alias: Skriv ut en bild på en drake
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "drake"
+
+print_bild_haj:
+  alias: Skriv ut en bild på en haj
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "haj"
+
+print_bild_fjaril:
+  alias: Skriv ut en bild på en fjäril
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "fjäril"
+
+print_bild_traktor:
+  alias: Skriv ut en bild på en traktor
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "traktor"
+
+print_bild_brandbil:
+  alias: Skriv ut en bild på en brandbil
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "brandbil"
+
+print_bild_polisbil:
+  alias: Skriv ut en bild på en polisbil
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "polisbil"
+
+print_bild_ambulans:
+  alias: Skriv ut en bild på en ambulans
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "ambulans"
+
+print_bild_rymdraket:
+  alias: Skriv ut en bild på en rymdraket
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "rymdraket"
+
+print_bild_bil:
+  alias: Skriv ut en bild på en bil
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "bil"
+
+print_bild_tag:
+  alias: Skriv ut en bild på ett tåg
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "tåg"
+
+print_bild_flygplan:
+  alias: Skriv ut en bild på ett flygplan
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "flygplan"
+
+print_bild_prinsessa:
+  alias: Skriv ut en bild på en prinsessa
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "prinsessa"
+
+print_bild_riddare:
+  alias: Skriv ut en bild på en riddare
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "riddare"
+
+print_bild_batman:
+  alias: Skriv ut en bild på batman
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "batman"
+
+print_bild_spiderman:
+  alias: Skriv ut en bild på spiderman
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "spiderman"
+
+print_bild_elsa_frozen:
+  alias: Skriv ut en bild på elsa
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "elsa frozen"
+
+print_bild_frozen_elsa:
+  alias: Skriv ut en bild på frozen
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "frozen elsa"
+
+print_bild_super_mario:
+  alias: Skriv ut en bild på super mario
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "super mario"
+
+print_bild_pokemon:
+  alias: Skriv ut en bild på pokemon
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "pokemon"
+
+print_bild_pikachu:
+  alias: Skriv ut en bild på pikachu
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "pikachu"
+
+print_bild_hello_kitty:
+  alias: Skriv ut en bild på hello kitty
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "hello kitty"
+
+print_bild_mickey_mouse:
+  alias: Skriv ut en bild på mickey mouse
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "mickey mouse"
+
+print_bild_nalle_puh:
+  alias: Skriv ut en bild på nalle puh
+  mode: queued
+  sequence:
+    - action: script.print_coloring_page
+      data:
+        subject: "nalle puh"

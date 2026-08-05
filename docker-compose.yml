@@ -37,3 +37,16 @@ services:
       - "1880:1880"
     volumes:
       - ./node-red:/data
+
+  coloring_printer:
+    container_name: coloring_printer
+    build:
+      context: ./printing
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./printing:/app
+      - /var/run/cups:/var/run/cups
+      - /etc/cups:/etc/cups:ro
+    environment:
+      PRINTING_BASE: /app

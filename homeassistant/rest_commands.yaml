@@ -1,0 +1,6 @@
+print_coloring_page:
+  url: http://127.0.0.1:8787/print
+  method: POST
+  content_type: "application/json"
+  payload: '{"subject": {{ subject | tojson }}}'
+  timeout: 30

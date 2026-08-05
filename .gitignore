@@ -1,11 +1,20 @@
 # Home Assistant
 homeassistant/.storage/
+homeassistant/.cache/
+homeassistant/.cloud/
+homeassistant/tts/
 homeassistant/home-assistant.log*
 homeassistant/database*
 homeassistant/*.log*
 homeassistant/*.db
 homeassistant/*.db-*
 homeassistant/.ha_run.lock
+
+# Printing
+printing/venv/
+printing/downloads/
+printing/output/
+printing/__pycache__/
 
 # Secrets
 secrets.yaml
