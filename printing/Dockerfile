@@ -12,6 +12,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY print_common.py print_coloring_page.py print_shopping_list.py print_api.py .
+COPY print_common.py print_coloring_page.py print_shopping_list.py print_api.py ./
 
 CMD ["python", "print_api.py"]
