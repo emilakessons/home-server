@@ -1,6 +1,13 @@
 print_coloring_page:
-  url: http://127.0.0.1:8787/print
+  url: http://127.0.0.1:8787/print/coloring-page
   method: POST
   content_type: "application/json"
   payload: '{"subject": {{ subject | tojson }}}'
+  timeout: 30
+
+print_shopping_list:
+  url: http://127.0.0.1:8787/print/shopping-list
+  method: POST
+  content_type: "application/json"
+  payload: '{"title": "Inköpslista", "items": {{ items | tojson }}}'
   timeout: 30

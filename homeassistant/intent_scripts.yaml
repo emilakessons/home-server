@@ -1,0 +1,5 @@
+PrintShoppingList:
+  speech:
+    text: "Okej, jag skriver ut inköpslistan"
+  action:
+    - action: script.print_inkopslista

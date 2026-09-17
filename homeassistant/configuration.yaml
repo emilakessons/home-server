@@ -8,5 +8,6 @@ frontend:
 
 automation: !include automations.yaml
 rest_command: !include rest_commands.yaml
+intent_script: !include intent_scripts.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml

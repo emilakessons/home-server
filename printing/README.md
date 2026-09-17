@@ -1,29 +1,33 @@
-# Målarbildsutskrift
+# Utskrift (målarbilder & inköpslista)
 
-Söker upp målarbilder på nätet, konverterar till svartvit A4 och skriver ut via CUPS.
+Söker upp målarbilder, renderar inköpslistor och skriver ut via CUPS.
 
-## Översikt
+## Arkitektur
 
 ```
-Home Assistant / Google Assistant
+Home Assistant
         │
         ▼
-  rest_command (HA)  eller  curl → print API (:8787)
+  print_api.py (:8787)     ← validerar input, startar jobb
         │
-        ▼
-  coloring_printer (Docker)
-        │
-        ▼
-  CUPS på värden (:631)  →  nätverksskrivare
+        ├── print_coloring_page.py   ← sök + render
+        └── print_shopping_list.py   ← render
+                │
+                ▼
+        print_common.py      ← enda stället som anropar CUPS (lp)
+                │
+                ▼
+        CUPS på värden (:631)
 ```
 
-| Komponent | Var | Port |
-|-----------|-----|------|
-| **CUPS** (skrivarserver) | Värden (Raspberry Pi) | **631** |
-| **Print API** | `coloring_printer`-container | **8787** |
-| **Home Assistant** | `homeassistant`-container | 8123 |
+| Fil | Ansvar |
+|-----|--------|
+| `print_api.py` | HTTP-endpoints, startar jobb i bakgrunden |
+| `print_coloring_page.py` | Sök, bearbeta och rendera målarbild |
+| `print_shopping_list.py` | Rendera inköpslista |
+| `print_common.py` | `print_files()` – skickar filer till skrivaren |
 
-Skrivarnamnet i koden är **`Skrivare`**. Om du byter namn i CUPS måste du uppdatera `print_coloring_page.py`.
+Skrivarnamn sätts via miljövariabel `CUPS_PRINTER` (standard: `Skrivare`).
 
 ---
 
@@ -115,24 +119,33 @@ sudo lpadmin -x Skrivare
 
 ## Print API (port 8787)
 
-Containern `coloring_printer` exponerar ett enkelt HTTP-API på **port 8787** (`network_mode: host`).
+Containern `coloring_printer` exponerar ett HTTP-API på **port 8787** (`network_mode: host`).
 
 | Endpoint | Metod | Beskrivning |
 |----------|-------|-------------|
-| `/health` | GET | Hälsokoll |
-| `/print` | POST | Starta utskrift |
+| `/health` | GET | Hälsokoll + lista endpoints |
+| `/print/coloring-page` | POST | Starta målarbildsutskrift |
+| `/print/shopping-list` | POST | Skriv ut inköpslista |
 
-Exempel:
+Exempel målarbild:
 
 ```bash
 curl http://127.0.0.1:8787/health
 
-curl -X POST http://127.0.0.1:8787/print \
+curl -X POST http://127.0.0.1:8787/print/coloring-page \
   -H "Content-Type: application/json" \
   -d '{"subject": "paw patrol chase"}'
 ```
 
-Svar `202` betyder att jobbet startats i bakgrunden (sök + nedladdning + utskrift tar tid).
+Exempel inköpslista:
+
+```bash
+curl -X POST http://127.0.0.1:8787/print/shopping-list \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Inköpslista", "items": ["Mjölk", "Bröd", "Ägg"]}'
+```
+
+Svar `202` betyder att jobbet startats i bakgrunden.
 
 ### Shell-wrapper
 
@@ -173,9 +186,11 @@ sudo systemctl enable --now cups
 
 | Sökväg | Innehåll |
 |--------|----------|
-| `print_coloring_page.py` | Sök, bearbeta och skriv ut |
-| `print_api.py` | HTTP-API för Home Assistant |
-| `print_coloring_page.sh` | Manuellt test via curl |
+| `print_common.py` | Delad CUPS-utskrift (`print_files`) |
+| `print_api.py` | HTTP-API – startar jobb |
+| `print_coloring_page.py` | Sök, bearbeta och rendera målarbilder |
+| `print_shopping_list.py` | Rendera och skriv ut inköpslista |
+| `print_coloring_page.sh` | Manuellt test målarbild via curl |
 | `downloads/` | Nedladdade originalbilder (gitignored) |
 | `output/` | Färdiga PNG:er före utskrift (gitignored) |
 
@@ -185,15 +200,31 @@ På värden ligger CUPS-konfiguration i `/etc/cups/` (viktigast: `printers.conf`
 
 ## Home Assistant
 
-HA anropar print API via `rest_commands.yaml`:
+HA anropar print API via [`homeassistant/rest_commands.yaml`](../homeassistant/rest_commands.yaml):
 
-```yaml
-rest_command.print_coloring_page:
-  url: http://127.0.0.1:8787/print
-  ...
-```
+- **Målarbilder:** `rest_command.print_coloring_page`
+- **Inköpslista:** `rest_command.print_shopping_list` (hämtar `todo.inkopslista`)
 
-Google Assistant använder script i `homeassistant/scripts.yaml` (t.ex. *"aktivera skriv ut en bild på Bamse"*), som i sin tur anropar samma API.
+### Målarbilder
+
+Google Assistant använder script i `homeassistant/scripts.yaml` (t.ex. *"aktivera skriv ut en bild på Bamse"*), som anropar print API.
+
+### Inköpslista
+
+Script **`Skriv ut inköpslistan`** (`script.print_inkopslista`):
+
+- Hämtar oavklarade poster från `todo.inkopslista`
+- Skriver ut via print API
+- Listan behålls oförändrad efter utskrift
+
+**Röstkommandon:**
+
+| Kanal | Kommando |
+|-------|----------|
+| Google Assistant | *"Hej Google, aktivera skriv ut inköpslistan"* |
+| HA Assist | *"Skriv ut inköpslistan"* |
+
+Tom lista → TTS: *"Inköpslistan är tom"* (ingen utskrift).
 
 ---
 
@@ -246,13 +277,12 @@ docker compose restart coloring_printer
 
 ### Fel skrivarnamn
 
-Koden använder hårdkodat namn `Skrivare`:
+Sätt miljövariabeln `CUPS_PRINTER` i `docker-compose.yml`, eller byt namn i CUPS:
 
-```python
-os.system(f'lp -d "Skrivare" "{output_file}"')
+```yaml
+environment:
+  CUPS_PRINTER: Skrivare
 ```
-
-Byt till ditt CUPS-namn om det skiljer sig, eller döp om skrivaren:
 
 ```bash
 sudo lpadmin -p GammaltNamn -o printer-is-shared=false
@@ -276,6 +306,7 @@ sudo systemctl restart cups
 | CUPS webb-UI | `http://<pi-ip>:631` |
 | Print API | `http://<pi-ip>:8787/health` |
 | Skrivarnamn | `Skrivare` |
-| Manuell utskrift | `./print_coloring_page.sh "motiv"` |
+| Manuell målarbild | `./print_coloring_page.sh "motiv"` |
+| Manuell inköpslista | `curl -X POST .../print/shopping-list -d '{"items":["Mjölk"]}'` |
 | CUPS-tjänst | `sudo systemctl restart cups` |
 | Container | `docker compose restart coloring_printer` |

@@ -1,6 +1,47 @@
 # Genererade Google-kommandon: ett script per motiv
 # Säg t.ex. "Hey Google, aktivera skriv ut en bild på Bamse"
 
+print_inkopslista:
+  alias: Skriv ut inköpslistan
+  mode: single
+  sequence:
+    - action: todo.get_items
+      target:
+        entity_id: todo.inkopslista
+      data:
+        status: needs_action
+      response_variable: shopping
+    - variables:
+        items: >-
+          {{
+            shopping['todo.inkopslista'].items
+            | map(attribute='summary')
+            | list
+          }}
+    - choose:
+        - conditions: "{{ items | length == 0 }}"
+          sequence:
+            - action: tts.speak
+              target:
+                entity_id: tts.google_translate_sv_se
+              data:
+                media_player_entity_id: media_player.vardagsrum_vardagsrum
+                message: "Inköpslistan är tom"
+      default:
+        - action: tts.speak
+          target:
+            entity_id: tts.google_translate_sv_se
+          data:
+            media_player_entity_id: media_player.vardagsrum_vardagsrum
+            message: "Jag skriver ut inköpslistan"
+        - action: rest_command.print_shopping_list
+          data:
+            items: "{{ items }}"
+        - action: notify.persistent_notification
+          data:
+            title: "Inköpslista"
+            message: "Skriver ut {{ items | length }} poster"
+
 print_coloring_page:
   alias: Skriv ut målarbild
   description: Intern helper – skriv ut på valfritt motiv

@@ -1,0 +1,10 @@
+language: "sv"
+
+intents:
+  PrintShoppingList:
+    data:
+      - sentences:
+          - "skriv ut inköpslistan"
+          - "printa inköpslistan"
+          - "skriv ut min inköpslista"
+          - "jag vill skriva ut inköpslistan"
